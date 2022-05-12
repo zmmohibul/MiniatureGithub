@@ -1,24 +1,53 @@
 <h3>Create an Account</h3>
-<form class="ui form" [formGroup]="authForm">
-  <div class="field">
-    <label>Username</label>
-    <input formControlName="userName" />
+<form (ngSubmit)="onSubmit()" class="ui form" [formGroup]="authForm">
+  <app-input
+    inputType="text"
+    label="Username"
+    [control]="authForm.get('userName')"
+  ></app-input>
+  <div *ngIf="authForm.get('userName').dirty && authForm.get('userName').touched && authForm.get('userName').errors" class="ui pointing red basic label">
+    <p *ngIf="authForm.get('userName').errors.pattern">
+      Username can contain only alphanumeric characters and underscores
+    </p>
   </div>
-  {{ authForm.get('userName').errors | json }}
-  <div class="field">
-    <label>Password</label>
-    <input formControlName="password" />
+  <app-input
+    inputType="password"
+    label="Password"
+    [control]="authForm.get('password')"
+  ></app-input>
+  <div *ngIf="authForm.get('password').dirty && authForm.get('password').touched && authForm.get('password').errors" class="ui pointing red basic label">
+    <p *ngIf="authForm.get('password').errors.pattern">
+      Password must contain 1 uppercase, 1 lowercase and 1 symbol
+    </p>
   </div>
-  {{ authForm.get('password').errors | json }}
-  <div class="field">
-    <label>Password Confirmation</label>
-    <input formControlName="passwordConfirmation" />
-  </div>
-  {{ authForm.get('passwordConfirmation').errors | json }}
 
-  <button class="ui submit button primary">
-    Submit
-  </button>
+  <app-input
+    inputType="password"
+    label="Password Confirmation"
+    [control]="authForm.get('passwordConfirmation')"
+  ></app-input>
+
+  <div
+    *ngIf="
+      authForm.get('password').touched &&
+      authForm.get('passwordConfirmation').touched &&
+      authForm.errors
+    "
+    class="ui red basic label"
+  >
+    <p *ngIf="authForm.errors.passwordsDontMatch">
+      Password and Password Confirmation must match
+    </p>
+    <p *ngIf="authForm.errors.unknownError">
+      Failed to sign up
+    </p>
+  </div>
+
+  <div>
+    <button class="ui submit button primary">
+      Submit
+    </button>
+  </div>
 
   {{ authForm.errors | json }}
 </form>

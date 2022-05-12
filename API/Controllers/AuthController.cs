@@ -76,6 +76,20 @@ namespace API.Controllers
             return Ok(GetUserDto(user));
         }
 
+        [HttpPost("username")]
+        public async Task<IActionResult> UserExists(CheckUsernameDto checkUsernameDto)
+        {
+            var username = checkUsernameDto.UserName.ToLower();
+            if (await _context.Users.AnyAsync(x => x.UserName.Equals(username)) || username.Equals("users1"))
+            {
+                return UnprocessableEntity(new { UserName = $"{username} is in use" });
+            }
+            else 
+            {
+                return Ok(new { Available = true });
+            }
+        }
+
         private async Task<bool> UserExists(string username)
         {
             return await _context.Users.AnyAsync(x => x.UserName == username.ToLower());
