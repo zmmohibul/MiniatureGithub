@@ -6,6 +6,7 @@ using API.Dtos;
 using API.Interfaces;
 using API.Models;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -88,6 +89,13 @@ namespace API.Controllers
             {
                 return Ok(new { Available = true });
             }
+        }
+
+        [Authorize]
+        [HttpGet("allusers")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            return Ok(await _context.Users.ToListAsync());
         }
 
         private async Task<bool> UserExists(string username)

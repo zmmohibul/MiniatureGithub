@@ -17,6 +17,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using API.Helper;
+using API.Extensions;
 
 namespace API
 {
@@ -40,6 +41,7 @@ namespace API
             {
                 options.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
             });
+            services.AddIdentityServices(_config);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
@@ -56,7 +58,7 @@ namespace API
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
             }
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
 
             app.UseRouting();
 
@@ -68,7 +70,8 @@ namespace API
                 .SetIsOriginAllowed(origin => true) // allow any origin
                 .AllowCredentials());
                 
-
+            app.UseAuthentication();
+            
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

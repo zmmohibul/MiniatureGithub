@@ -1,1 +1,30 @@
-<p>signin works!</p>
+<ng-container *ngIf="users">
+    <div *ngFor="let user of users">
+        {{ user.userName }}
+    </div>
+</ng-container>
+
+<h3>Login</h3>
+<form (ngSubmit)="onSubmit()" class="ui form" [formGroup]="loginForm">
+    <div class="field">
+        <label >Username</label>
+        <input formControlName="userName">
+    </div>
+
+    <div class="field">
+        <label >Password</label>
+        <input formControlName="password">
+    </div>
+
+    <div>
+        <button class="ui submit button primary">
+          Submit
+        </button>
+    </div>
+
+    <div *ngIf="loginForm.errors?.invalidCredentials" class="ui pointing red basic label">
+        <p>
+            Invalid Username or Password
+        </p>
+    </div>
+</form>

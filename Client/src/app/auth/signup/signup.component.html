@@ -5,8 +5,8 @@
     label="Username"
     [control]="authForm.get('userName')"
   ></app-input>
-  <div *ngIf="authForm.get('userName').dirty && authForm.get('userName').touched && authForm.get('userName').errors" class="ui pointing red basic label">
-    <p *ngIf="authForm.get('userName').errors.pattern">
+  <div *ngIf="authForm.get('userName').dirty && authForm.get('userName').touched && authForm.get('userName').errors && authForm.get('userName').errors.pattern" class="ui pointing red basic label">
+    <p>
       Username can contain only alphanumeric characters and underscores
     </p>
   </div>
